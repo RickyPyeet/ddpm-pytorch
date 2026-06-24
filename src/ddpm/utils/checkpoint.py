@@ -2,7 +2,9 @@ import datetime
 from pathlib import Path
 import torch
 
-def save_checkpoint(name, checkpoint, checkpoint_path):
+def save_checkpoint(name, 
+                    checkpoint, 
+                    checkpoint_path):
   checkpoint_path = Path(checkpoint_path)
 
   if not checkpoint_path.exists():
@@ -21,3 +23,17 @@ def save_checkpoint(name, checkpoint, checkpoint_path):
   print(f"[INFO] Checkpoint saved! :)")
 
   return save_path
+
+def load_checkpoint(checkpoint_path, 
+                    model,
+                    optimizer = None,
+                    ema = None,
+                    device = 'cpu'):
+  checkpoint = torch.load(checkpoint_path, map_location = device)
+  model.load_state_dict(checkpoint['model_state_dict'])
+  if optimizer is not None:
+    optimizer.load_state_dict(checkpoint['model_state_dict'])
+  if ema is not None:
+    optimizer.load_state_dict(checkpoint['ema_state_dict'])
+
+  return checkpoint
