@@ -129,13 +129,17 @@ class DenoisingUNet(nn.Module):
     self.out_conv = nn.Conv2d(input_dim, self.out_dim, 1)
     init_conv(self.out_conv)
 
-  def forward(self, x, time):
+  def forward(self, x, time, cond_emb = None):
     # Channel projection
     x = self.initial_conv(x)
     r = x.clone()
 
     # Time embedding
     t = self.time_mlp(time) #embed timestep with sinposembedding and then enrich it with nn.Linear with input_dim*4
+
+    # Conditioning 
+    if cond_emb is not None:
+      t = t + cond_emb
 
     # Down path
     h = [] # skip connections list
