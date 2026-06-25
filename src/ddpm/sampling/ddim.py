@@ -38,7 +38,7 @@ def ddim_step(model,
     epsilon = general_pred
     x_0 = compute_x0_from_epsilon(x_t, epsilon, alpha_bar_t)
 
-  elif pred_type == 'x0':
+  elif pred_type == 'x_0':
     x_0 = general_pred
     epsilon = compute_epsilon_from_x0(x_t, x_0, alpha_bar_t)
 
