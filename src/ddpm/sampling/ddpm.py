@@ -89,7 +89,7 @@ def sample_ddpm(model, timesteps, img_shape, c, pred_type = 'epsilon', save_step
                  guidance_scale = guidance_scale)
 
     if save_steps == True and ((t%100 == 0) or t == timesteps-1):
-      img_steps.append(x.cpu())
+      img_steps.append(x.detach().cpu())
 
   x = x.clamp(-1, 1)
 
