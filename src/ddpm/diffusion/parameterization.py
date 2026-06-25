@@ -18,8 +18,8 @@ def compute_x0_epsilon_from_v(x_t, v_pred, alpha_bar_t):
   epsilon = torch.sqrt(alpha_bar_t)*v_pred + torch.sqrt(1-alpha_bar_t)*x_t
   return x_0, epsilon
 
-def compute_sigma_t(alpha_bar_t, alpha_bar_t_previous, eta = 0):
-
+def compute_sigma_t(alpha_bar_t, alpha_bar_t_previous, eta = 0.8):
+  """Compute sigma for DDIM"""
   sigma_t = torch.sqrt((1-alpha_bar_t_previous)/(1-alpha_bar_t) * (1 - alpha_bar_t/alpha_bar_t_previous))
   sigma_t = eta * sigma_t
   return sigma_t
