@@ -1,0 +1,41 @@
+seed: 42
+
+device: cuda
+
+dataset:
+  name: cifar10
+  root: data/
+  batch_size: 128
+  num_workers: 4
+
+model:
+  input_dim: 64
+  channels: 3
+  num_classes: 10
+  groupnorm_groups: 8
+  dimension_multiplier: [1, 2, 4, 8]
+
+training:
+  epochs: 300
+  optimizer: adamw
+  learning_rate: 1e-4
+  ema_decay: 0.999
+  use_compile: true
+  save_dir: checkpoints/
+  save_every: 200
+  resume_from: null
+
+diffusion:
+  timesteps: 1000
+  schedule: cosine
+  prediction_type: v
+
+cfg:
+  dropout: 0.2
+  guidance_scale: 2.5
+
+sampling:
+  sample_every: 100
+  sampler: ddpm
+  sampling_timesteps: 100
+  eta: 0.8
