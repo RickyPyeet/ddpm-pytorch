@@ -8,7 +8,22 @@ from ddpm.training.ema import EMA
 from ddpm.training.objective import get_train_target
 from ddpm.utils.checkpoint import load_checkpoint, save_checkpoint
 
+def create_optimizer(model, optim_type, lr):
+  optim_list = ['adam', 'adamw']
 
+  if optim_type not in optim_list:
+    raise ValueError(f"{optim_type} is not a valid optimizer, pick {optim_list}")
+  
+  if optim_type == 'adam':
+    optimizer = torch.optim.Adam(params = model.parameters(),
+                                 lr = lr)
+  elif optim_type == 'adamw':
+    optimizer = torch.optim.AdamW(params = model.parameters(),
+                                  lr = lr,
+                                  betas = (0.9, 0.999),
+                                  eps = 1e-8,
+                                  weight_decay = 0.01)
+  return optimizer
 
 def trainer(model: nn.Module,
             train_dataloader,
