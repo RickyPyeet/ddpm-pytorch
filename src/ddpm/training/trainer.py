@@ -153,7 +153,7 @@ def trainer(model: nn.Module,
         'class_free_dropout': class_free_dropout
     }
     # Save checkpoints
-    if save_dir is not None and ((epoch+1) % save_every == 0) or ((epoch+1) == epochs):
+    if save_dir is not None and (((epoch+1) % save_every == 0) or ((epoch+1) == epochs)):
       save_checkpoint(name = f"checkpoint_epoch_{epoch+1}_{lr}_lr_{pred_type}_pred_type.pt",
                       checkpoint = checkpoint,
                       checkpoint_path = save_dir)
@@ -166,9 +166,9 @@ def trainer(model: nn.Module,
 
         with torch.inference_mode():
           if sample_labels is None:
-            sample_labels = torch.tensor([1, 3, 6, 8])
+            c = torch.tensor([1, 3, 6, 8])
           generate_and_plot(model = model,
-                            c = sample_labels,
+                            c = c,
                             img_shape = (len(sample_labels), 3, 32, 32),
                             sampler = sampler,
                             timesteps = timesteps,
