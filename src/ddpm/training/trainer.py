@@ -36,6 +36,7 @@ def trainer(model: nn.Module,
             eta: float = 0.8,
             ema_decay: float = 0.999,
             timesteps: int = 1000,
+            schedule_type: str = 'cosine',
             optim: str = "adamw",
             save_dir: str = None,
             save_every: int = 200,
@@ -66,7 +67,7 @@ def trainer(model: nn.Module,
   ema = EMA(model = model, decay = ema_decay)
 
   # Noise Schedule
-  schedule = DiffusionSchedule(timesteps = timesteps, schedule = 'cosine', device = device)
+  schedule = DiffusionSchedule(timesteps = timesteps, schedule = schedule_type, device = device)
   betas, alphas, alpha_bar = schedule()
 
   # Define training variables
