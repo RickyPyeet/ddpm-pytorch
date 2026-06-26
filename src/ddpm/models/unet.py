@@ -3,10 +3,10 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from ddpm.models.attention import SelfAttention, LinearAttention
-from ddpm.models.init import init_conv
-from ddpm.models.embeddings import SinPositionalEmbedding
-from ddpm.models.resnet import ResnetBlock
+from src.ddpm.models.attention import SelfAttention, LinearAttention
+from src.ddpm.models.init import init_conv
+from src.ddpm.models.embeddings import SinPositionalEmbedding
+from src.ddpm.models.resnet import ResnetBlock
 
 ### U-Net Helper Blocks ###
 
@@ -32,7 +32,7 @@ class Upsample(nn.Module):
   def __init__(self, in_channels, out_channels):
     super().__init__()
     self.conv = nn.Conv2d(in_channels, out_channels, kernel_size = 3, padding = 1)
-   
+
     init_conv(self.conv)
   def forward(self, x):
     x = F.interpolate(x, scale_factor = 2, mode = 'nearest')
@@ -106,6 +106,8 @@ class DenoisingUNet(nn.Module):
     self.bottleneck_1 = ResnetBlock(in_channels = bottle_dim, out_channels = bottle_dim, time_embedded_dim = time_dim, groups = groupnorm_groups)
     self.bottleneck_attention = Residual(GroupNormBlock(bottle_dim, SelfAttention(bottle_dim)))
     self.bottleneck_2 = ResnetBlock(in_channels = bottle_dim, out_channels = bottle_dim, time_embedded_dim = time_dim, groups = groupnorm_groups)
+    self.bottleneck_attention_2 = Residual(GroupNormBlock(bottle_dim, SelfAttention(bottle_dim)))
+    self.bottleneck_3 = ResnetBlock(in_channels = bottle_dim, out_channels = bottle_dim, time_embedded_dim = time_dim, groups = groupnorm_groups)
 
     ### Upwards path
     self.ups = nn.ModuleList([])
@@ -137,7 +139,7 @@ class DenoisingUNet(nn.Module):
     # Time embedding
     t = self.time_mlp(time) #embed timestep with sinposembedding and then enrich it with nn.Linear with input_dim*4
 
-    # Conditioning 
+    # Conditioning
     if cond_emb is not None:
       t = t + cond_emb
 
@@ -158,6 +160,8 @@ class DenoisingUNet(nn.Module):
     x = self.bottleneck_1(x, t)
     x = self.bottleneck_attention(x)
     x = self.bottleneck_2(x, t)
+    x = self.bottleneck_attention_2(x)
+    x = self.bottleneck_3(x, t)
 
     # Upward path
     for block1, block2, linear_attention, upsample in self.ups:
