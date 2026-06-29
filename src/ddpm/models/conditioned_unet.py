@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from ddpm.models.unet import DenoisingUNet
+from src.ddpm.models.unet import DenoisingUNet
 
 class ClassConditionedUNet(nn.Module):
   def __init__(self, num_classes = 10, input_dim = 64, channels = 3, groupnorm_groups = 8, dimension_multiplier = (1,2,4,8)):

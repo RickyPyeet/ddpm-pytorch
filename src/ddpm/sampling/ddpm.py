@@ -3,8 +3,8 @@ from torch import nn
 from torch.nn import functional as F
 from tqdm.auto import tqdm
 
-from ddpm.diffusion.process import extract
-from ddpm.diffusion.schedules import DiffusionSchedule
+from src.ddpm.diffusion.process import extract
+from src.ddpm.diffusion.schedules import DiffusionSchedule
 
 
 def p_sample(model, x, t, betas, alphas, alpha_bars, t_index, c, pred_type = 'epsilon', guidance_scale = 2.5):

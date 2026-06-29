@@ -1,2 +1,5 @@
-checkpoints/*.pt
-checkpoints/*.pth
+checkpoints/*
+!checkpoints/.gitkeep
+data/*
+__pycache__/
+*py[cod]

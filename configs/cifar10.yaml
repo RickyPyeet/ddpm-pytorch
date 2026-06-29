@@ -18,7 +18,7 @@ model:
 training:
   epochs: 2000
   optimizer: adamw
-  learning_rate: 1e-4
+  learning_rate: 0.0001
   ema_decay: 0.999
   use_compile: true
   save_dir: checkpoints/
@@ -35,7 +35,8 @@ cfg:
   guidance_scale: 3.5
 
 sampling:
-  sample_every: 100
+  sample_every: 1
   sampler: ddpm
   sampling_timesteps: 100
+  labels: [0,1,2,3,4,5,6,7,8,9]
   eta: 0.8

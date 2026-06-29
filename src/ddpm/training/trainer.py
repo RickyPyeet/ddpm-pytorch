@@ -1,12 +1,13 @@
 import torch
 from torch import nn
+from tqdm.auto import tqdm
 
-from ddpm.diffusion.process import batched_diffusion_kernel
-from ddpm.diffusion.schedules import DiffusionSchedule
-from ddpm.sampling.inference import generate_and_plot
-from ddpm.training.ema import EMA
-from ddpm.training.objective import get_train_target
-from ddpm.utils.checkpoint import load_checkpoint, save_checkpoint
+from src.ddpm.diffusion.process import batched_diffusion_kernel
+from src.ddpm.diffusion.schedules import DiffusionSchedule
+from src.ddpm.sampling.inference import generate_and_plot
+from src.ddpm.training.ema import EMA
+from src.ddpm.training.objective import get_train_target
+from src.ddpm.utils.checkpoint import load_checkpoint, save_checkpoint
 
 def create_optimizer(model, optim_type, lr):
   optim_list = ['adam', 'adamw']
@@ -30,9 +31,9 @@ def trainer(model: nn.Module,
             epochs,
             device,
             pred_type: str = 'v',
-            lr: float = 3e-4,
+            lr: float = 1e-4,
             class_free_dropout: float = 0.2,
-            guidance_scale: float = 2.5,
+            guidance_scale: float = 3.5,
             eta: float = 0.8,
             ema_decay: float = 0.999,
             timesteps: int = 1000,

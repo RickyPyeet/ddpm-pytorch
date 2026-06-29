@@ -1,7 +1,7 @@
 import torch
-from ddpm.utils.image import plot_image_grid
-from ddpm.sampling.ddpm import sample_ddpm
-from ddpm.sampling.ddim import sample_ddim
+from src.ddpm.utils.image import plot_image_grid
+from src.ddpm.sampling.ddpm import sample_ddpm
+from src.ddpm.sampling.ddim import sample_ddim
 
 def generate_and_plot(model,
                       c,

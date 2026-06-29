@@ -2,7 +2,7 @@ import math
 import torch
 from torch import nn
 
-from ddpm.models.init import init_conv
+from src.ddpm.models.init import init_conv
 
 ### Attention Helpers ###
 

@@ -1,6 +1,6 @@
 import torch
 
-from ddpm.diffusion.process import extract
+from src.ddpm.diffusion.process import extract
 
 def get_train_target(x_0: torch.Tensor, 
                      noise: torch.Tensor,

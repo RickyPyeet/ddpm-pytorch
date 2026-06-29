@@ -1,10 +1,10 @@
 import torch
 from torch import nn
-from ddpm.utils.seed import set_seed
-from ddpm.utils.config import load_config
-from ddpm.data.cifar10 import get_cifar10_dataloader
-from ddpm.models.conditioned_unet import ClassConditionedUNet
-from ddpm.training.trainer import train
+from src.ddpm.utils.seed import set_seed
+from src.ddpm.utils.config import load_config
+from src.ddpm.data.cifar10 import get_cifar10_dataloader
+from src.ddpm.models.conditioned_unet import ClassConditionedUNet
+from src.ddpm.training.trainer import trainer
 
 def main():
 

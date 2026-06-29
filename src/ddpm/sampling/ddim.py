@@ -1,9 +1,9 @@
 import torch
 from tqdm.auto import tqdm
 
-from ddpm.diffusion.process import extract
-from ddpm.diffusion.schedules import DiffusionSchedule
-from ddpm.diffusion.parameterization import compute_epsilon_from_x0, compute_x0_from_epsilon, compute_x0_epsilon_from_v, compute_sigma_t
+from src.ddpm.diffusion.process import extract
+from src.ddpm.diffusion.schedules import DiffusionSchedule
+from src.ddpm.diffusion.parameterization import compute_epsilon_from_x0, compute_x0_from_epsilon, compute_x0_epsilon_from_v, compute_sigma_t
 
 # Compute the sampling step x_t-1
 def ddim_step(model, 
