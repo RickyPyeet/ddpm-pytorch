@@ -47,7 +47,7 @@ def trainer(model: nn.Module,
             sample_timesteps: int = 100,
             use_compile: bool = False,
             seed: int = 42):
-  
+
   valid_pred_type =['epsilon', 'x_0', 'v']
 
   if pred_type not in valid_pred_type:
@@ -158,7 +158,7 @@ def trainer(model: nn.Module,
       save_checkpoint(name = f"checkpoint_epoch_{epoch+1}_{lr}_lr_{pred_type}_pred_type.pt",
                       checkpoint = checkpoint,
                       checkpoint_path = save_dir)
-    
+
     # Generate samples
     if sample_every is not None:
       if (epoch + 1) % sample_every == 0:
@@ -167,9 +167,9 @@ def trainer(model: nn.Module,
 
         with torch.inference_mode():
           if sample_labels is None:
-            c = torch.tensor([1, 3, 6, 8])
+            sample_labels = torch.tensor([1, 3, 6, 8])
           generate_and_plot(model = model,
-                            c = c,
+                            c = sample_labels,
                             img_shape = (len(sample_labels), 3, 32, 32),
                             sampler = sampler,
                             timesteps = timesteps,
