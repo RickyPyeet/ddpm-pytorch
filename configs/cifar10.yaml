@@ -12,11 +12,11 @@ model:
   input_dim: 64
   channels: 3
   num_classes: 10
-  groupnorm_groups: 8
+  groupnorm_groups: 32
   dimension_multiplier: [1, 2, 4, 8]
 
 training:
-  epochs: 300
+  epochs: 2000
   optimizer: adamw
   learning_rate: 1e-4
   ema_decay: 0.999
