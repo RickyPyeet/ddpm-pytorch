@@ -1,6 +1,5 @@
 import torch
 import argparse
-
 from ddpm.utils.config import load_config
 from ddpm.utils.seed import set_seed
 from ddpm.models.conditioned_unet import ClassConditionedUNet
