@@ -9,8 +9,8 @@ def get_train_transforms():
       transforms.Resize((32, 32)),
       transforms.RandomHorizontalFlip(p = 0.5),
       transforms.ToTensor(),
-      transforms.Normalize(mean = (0.5, 0.5, 0.5),
-                           std = (0.5, 0.5, 0.5))])
+      transforms.Normalize(mean = (0.5, 0.5, 0.5), std = (0.5, 0.5, 0.5))
+      ])
   return train_transform
 
 def get_cifar10_dataloader(data_dir: str,
