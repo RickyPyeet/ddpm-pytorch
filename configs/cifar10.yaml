@@ -32,7 +32,7 @@ diffusion:
 
 cfg:
   dropout: 0.2
-  guidance_scale: 2.5
+  guidance_scale: 3.5
 
 sampling:
   sample_every: 100
