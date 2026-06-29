@@ -2,6 +2,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
 A PyTorch implementation of Denoising Diffusion Probabilistic Models (DDPM) trained on CIFAR-10.
 The project started as an implementation of the original DDPM paper and then became a combination of ideas from multiple diffusion works, making it suitable for experimentation and further extension.
 
@@ -28,7 +29,7 @@ pip install -r requirements.txt
 ## Training
 Training is configured, and can be modified, via `configs/cifar10.yaml`. It can be performed by launching:
 
-`python train.py`
+>`python train.py`
 
 When training is launched CIFAR-10 is downloaded automatically.
 
