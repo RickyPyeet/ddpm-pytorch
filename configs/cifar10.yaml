@@ -35,7 +35,7 @@ cfg:
   guidance_scale: 3.5
 
 sampling:
-  sample_every: 1
+  sample_every: 100
   sampler: ddpm
   sampling_timesteps: 100
   labels: [0,1,2,3,4,5,6,7,8,9]
