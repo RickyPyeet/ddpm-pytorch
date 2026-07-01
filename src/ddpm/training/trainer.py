@@ -89,7 +89,7 @@ def trainer(model: nn.Module,
     loss_hist = checkpoint['loss_hist']
 
     class_free_dropout = checkpoint['class_free_dropout']
-    guidance_scale = checkpoint['guidance_scale']
+    # guidance_scale = checkpoint['guidance_scale']
 
   # Compile model for faster training
   if use_compile:
@@ -178,7 +178,7 @@ def trainer(model: nn.Module,
                             pred_type = pred_type,
                             guidance_scale = guidance_scale,
                             eta = eta,
-                            title = f"Epoch: {epoch}",
+                            title = f"Epoch: {epoch+1}",
                             seed = seed)
 
         ema.restore()
