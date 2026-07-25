@@ -7,8 +7,7 @@ def save_checkpoint(name,
                     checkpoint_path):
   checkpoint_path = Path(checkpoint_path)
 
-  if not checkpoint_path.exists():
-    checkpoint_path.mkdir(parents = True, exist_ok = True)
+  checkpoint_path.mkdir(parents = True, exist_ok = True)
 
   date = datetime.datetime.now()
   date = "_".join(date.strftime("%c").strip().split())
@@ -24,10 +23,12 @@ def save_checkpoint(name,
 
   return save_path
 
-def load_checkpoint(checkpoint_path, 
+def load_checkpoint(checkpoint_path,
                     model,
                     optimizer = None,
                     ema = None,
+                    scheduler = None,
+                    scaler = None,
                     device = 'cpu'):
   checkpoint = torch.load(checkpoint_path, map_location = device)
   model.load_state_dict(checkpoint['model_state_dict'])
@@ -35,5 +36,9 @@ def load_checkpoint(checkpoint_path,
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
   if ema is not None:
     ema.load_state_dict(checkpoint['ema_state_dict'])
+  if scheduler is not None:
+    scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+  if scaler is not None and 'scaler_state_dict' in checkpoint:
+    scaler.load_state_dict(checkpoint['scaler_state_dict'])
 
   return checkpoint
