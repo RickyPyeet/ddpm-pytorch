@@ -27,6 +27,15 @@ def create_optimizer(model, optim_type, lr):
                                   weight_decay = 0.01)
   return optimizer
 
+# Crate scheduler
+def create_cosine_scheduler(optimizer, T_max):
+  """
+  Create a learning rate cosine scheduler
+  """
+  scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer = optimizer, T_max = T_max)
+  return scheduler
+
+# Trainer function
 def trainer(model: nn.Module,
             train_dataloader,
             device,
