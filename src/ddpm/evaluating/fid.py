@@ -7,11 +7,34 @@ from torchmetrics.image.fid import FrechetInceptionDistance
 from torchvision.datasets import CIFAR10
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
+from src.ddpm.sampling.ddpm import sample_ddpm
+from src.ddpm.sampling.ddim import sample_ddim
 
 from PIL import Image
 from pathlib import Path
 from tqdm.auto import tqdm
 from tempfile import TemporaryDirectory
+
+def save_samples(samples: torch.Tensor,
+                 save_path: str | Path,
+                 start_from: int = 0) -> None:
+  """
+  Takes a batch samples and saves them in '.png' format.
+  The image will be saved with the following structure:
+  save_path/00000.png
+  """
+  save_path = Path(save_path)
+  save_path.mkdir(parents = True, exist_ok = True)
+
+  batch_size = samples.shape[0]
+
+  pil_images = tensor_to_pil(samples)
+
+  for i, img in enumerate(pil_images):
+    img_path = save_path / f"{start_from+i:06d}.png"
+    img.save(img_path)
+
+  print(f"Finished saving {batch_size} images to {save_path}!")
 
 def generate_samples(num_samples: int,
                      batch_size: int,
@@ -139,7 +162,7 @@ def compute_fid(generated_dir: str | Path,
 
   real_dataset = CIFAR10(root = cifar_root,
                          train = False,
-                         download = False,
+                         download = True,
                          transform = transforms.PILToTensor())
 
   generated_dataset = GeneratedDataset(generated_dir)
@@ -175,47 +198,47 @@ def compute_fid(generated_dir: str | Path,
 
   return score.item(), elapsed_time
 
-  def generate_compute_fid(cifar_val_root: str | Path,
-                         num_samples: int,
-                         batch_size: int,
-                         num_classes:int,
-                         model: nn.Module,
-                         timesteps: int,
-                         sampler: str,
-                         ema,
-                         sampling_timesteps: int,
-                         pred_type: str,
-                         guidance_scale: float,
-                         eta: float):
+def generate_compute_fid(cifar_val_root: str | Path,
+                        num_samples: int,
+                        batch_size: int,
+                        num_classes:int,
+                        model: nn.Module,
+                        timesteps: int,
+                        sampler: str,
+                        ema,
+                        sampling_timesteps: int,
+                        pred_type: str,
+                        guidance_scale: float,
+                        eta: float):
 
-  device = next(model.parameters()).device
+device = next(model.parameters()).device
 
-  with TemporaryDirectory() as tmpdir:
-    sampling_time_seconds, samples_per_second, ms_per_image, generated_count = generate_samples(num_samples = num_samples,
-                                                                                                batch_size = batch_size,
-                                                                                                num_classes = num_classes,
-                                                                                                save_path = tmpdir,
-                                                                                                model = model,
-                                                                                                timesteps = timesteps,
-                                                                                                sampler = sampler,
-                                                                                                ema = ema,
-                                                                                                sampling_timesteps = sampling_timesteps,
-                                                                                                pred_type = pred_type,
-                                                                                                guidance_scale = guidance_scale,
-                                                                                                eta = eta)
+with TemporaryDirectory() as tmpdir:
+sampling_time_seconds, samples_per_second, ms_per_image, generated_count = generate_samples(num_samples = num_samples,
+                                                                                            batch_size = batch_size,
+                                                                                            num_classes = num_classes,
+                                                                                            save_path = tmpdir,
+                                                                                            model = model,
+                                                                                            timesteps = timesteps,
+                                                                                            sampler = sampler,
+                                                                                            ema = ema,
+                                                                                            sampling_timesteps = sampling_timesteps,
+                                                                                            pred_type = pred_type,
+                                                                                            guidance_scale = guidance_scale,
+                                                                                            eta = eta)
 
-    fid, fid_time = compute_fid(generated_dir = tmpdir,
-                                cifar_root = cifar_val_root,
-                                batch_size = batch_size,
-                                num_workers = os.cpu_count(),
-                                device = device)
+fid, fid_time = compute_fid(generated_dir = tmpdir,
+                            cifar_root = cifar_val_root,
+                            batch_size = batch_size,
+                            num_workers = os.cpu_count(),
+                            device = device)
 
-  # Create results dictionary
-  results = {'fid': fid,
-             'fid_time': fid_time,
-             'generated_count': generated_count,
-             'sampling_time_seconds': sampling_time_seconds,
-             'samples_per_second': samples_per_second,
-             'ms_per_image': ms_per_image}
+# Create results dictionary
+results = {'fid': fid,
+            'fid_time': fid_time,
+            'generated_count': generated_count,
+            'sampling_time_seconds': sampling_time_seconds,
+            'samples_per_second': samples_per_second,
+            'ms_per_image': ms_per_image}
 
-  return fid, results
+return fid, results
