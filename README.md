@@ -91,7 +91,7 @@ As expected `throughput` and `latency` did not vary much with all three targets,
 
 >NOTE: Training and results were obtained using a NVIDIA RTX PRO 6000 Blackwell Server Edition GPU.
 
-All results were obtained during training with the above settings (for more details check `outputs/pred_target/config.yaml`):
+All results were obtained during training with the above settings (for more details check `configs/cifar10.yaml`):
 
 | Model |    FID ↓ | Throughput (images/s) ↑  | Latency (ms/image) ↓ |
 | ----- | -------: | -----------------------: | -------------------: |
