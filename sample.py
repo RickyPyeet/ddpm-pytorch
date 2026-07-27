@@ -32,7 +32,7 @@ def main():
 
   model = ClassConditionedUNet(num_classes = config['model']['num_classes'],
                                input_dim = config['model']['input_dim'],
-                               channels = config['model']['channels'],
+                               channels = config['model']['in_channels'],
                                groupnorm_groups = config['model']['groupnorm_groups'],
                                dimension_multiplier = tuple(config['model']['dimension_multiplier'])).to(device)
   
@@ -47,7 +47,7 @@ def main():
   with torch.inference_mode():
     generate_and_plot(model = model,
                       c = labels,
-                      img_shape = ((len(labels),config['model']['channels'],32,32)),
+                      img_shape = ((len(labels),config['model']['in_channels'],32,32)),
                       sampler =  args.sampler,
                       timesteps = config['diffusion']['timesteps'],
                       sampling_timesteps = config['sampling']['sampling_timesteps'],
