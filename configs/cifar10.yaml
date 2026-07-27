@@ -1,42 +1,63 @@
-seed: 42
+wandb:
+  use_wandb: true
+  entity: null
+  project: DDPM-pytorch
+  group: prediction-target-ablation
+  job_type: train
+  mode: online
+  tags:
+    - ddpm
+    - cifar10
 
-device: cuda
+paths:
+  data_path: data/
+  dataset_path: data/
+  save_path: checkpoints/pred_type/
+  resume_from: null
+  cifar_val_path: data/
 
-dataset:
-  name: cifar10
-  root: data/
+training:
+  total_steps: 500000
+  pred_type: epsilon
+  lr: 0.0003
+
+  use_amp: true
+  scaler_dtype: bfloat16
+
+  log_every: 100
+  save_every: 50000
+  sample_every: 25000
+
+  timesteps: 1000
+  schedule_type: cosine
+  optim: adamw
+
+  ema_decay: 0.9999
+  class_free_dropout: 0.2
+  seed: 42
+
+  guidance_scale: 3.5
+  eta: 0
+  sampler: ddim
+  sample_timesteps: 100
+
+  enable_fid: true
+  num_classes: 10
+  fid_every: 100000
+  num_samples: 10000
+  fid_batch_size: 256
+  fid_sampler: ddim
+
+dataloader:
   batch_size: 128
   num_workers: 4
 
 model:
+  in_channels: 3
   input_dim: 64
-  channels: 3
-  num_classes: 10
   groupnorm_groups: 32
-  dimension_multiplier: [1, 2, 4, 8]
-
-training:
-  epochs: 2000
-  optimizer: adamw
-  learning_rate: 0.0001
-  ema_decay: 0.999
-  use_compile: true
-  save_dir: checkpoints/
-  save_every: 200
-  resume_from: null
-
-diffusion:
-  timesteps: 1000
-  schedule: cosine
-  prediction_type: v
-
-cfg:
-  dropout: 0.2
-  guidance_scale: 3.5
+  num_classes: 10
+  dimension_multiplier: [1,2,4,8]
 
 sampling:
-  sample_every: 100
-  sampler: ddpm
-  sampling_timesteps: 100
-  labels: [0,1,2,3,4,5,6,7,8,9]
-  eta: 0.8
+  sample_labels: [0,1,2,3,4,5,6,7,8,9]
